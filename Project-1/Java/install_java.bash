@@ -1,10 +1,10 @@
 #!/bin/bash
 
 echo "update your vm"
-apt-get update
+apt-get -y update
 
 echo "Installing java version 8"
-apt install openjdk-8-jdk
+apt install -y openjdk-8-jdk
 
 echo "check java version"
 java -version
