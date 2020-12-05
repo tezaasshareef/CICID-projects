@@ -10,8 +10,25 @@ echo "make user changes in nexus.rc"
 sed -i 's/#run_as_user=""/run_as_user="root"/' /opt/nexus/bin/nexus.rc
 echo "Modify memory settings"
 sed -i 's/2703/512/' /opt/nexus/bin/nexus.vmoptions
-echo "copy nexus.service file"
-cp /root/nexus.service /etc/systemd/system
+echo "create nexus.service file"
+touch /etc/systemd/system/nexus.service
+echo "[Unit]" >> /etc/systemd/system/nexus.service
+echo "Description=nexus service" >> /etc/systemd/system/nexus.service
+echo "After=network.target" >> /etc/systemd/system/nexus.service
+echo "[Service]" >> /etc/systemd/system/nexus.service
+echo "Type=forking" >> /etc/systemd/system/nexus.service
+echo "LimitNOFILE=65536" >> /etc/systemd/system/nexus.service
+echo "User=root" >> /etc/systemd/system/nexus.service
+echo "Group=root" >> /etc/systemd/system/nexus.service
+echo "ExecStart=/opt/nexus/bin/nexus start" >> /etc/systemd/system/nexus.service
+echo "ExecStop=/opt/nexus/bin/nexus stop" >> /etc/systemd/system/nexus.service
+echo "User=root" >> /etc/systemd/system/nexus.service
+echo "Restart=on-abort" >> /etc/systemd/system/nexus.service
+echo "[Install]" >> /etc/systemd/system/nexus.service
+echo "WantedBy=multi-user.target" >> /etc/systemd/system/nexus.service
+
+chmod 755 /etc/systemd/system/nexus.service
+
 echo "start nexus service"
 serv=nexus
 sstat=$(pidof $serv | wc -l )
