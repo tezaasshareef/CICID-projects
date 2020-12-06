@@ -11,6 +11,8 @@ apt-get -y install jenkins
 sleep "30"
 echo "Change defualt port to 8082"
 sed -i 's/8080/8082/' /etc/default/jenkins
+echo "Allowing users to signup"
+sed -i 's/<disableSignup>true<\/disableSignup>/<disableSignup>false<\/disableSignup>/' /var/lib/jenkins/config.xml
 echo "Restart jenkins server"
 systemctl restart jenkins
 echo "Iniatial admin password"
