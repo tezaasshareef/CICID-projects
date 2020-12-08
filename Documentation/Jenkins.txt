@@ -1,0 +1,140 @@
+Tasks:
+======
+1)Install jenkins
+Execute java script
+Ececute jenkins script
+
+2) setup slave node
+#Setup Jenkins Slave
+====================
+Need to install java in slave machine
+# Create user and add the user to wheel group
+useradd jenkins-slave-01 (optional)
+# Create SSH Keys
+sudo su - jenkins-slave-01 (optional)
+ssh-keygen -t rsa -N "" -f /home/jenkins-slave-01/.ssh/id_rsa
+# The private and public keys will be created at these locations `/home/jenkins-slave-01/.ssh/id_rsa` and `/home/jenkins-slave-01/.ssh/id_rsa.pub`
+cd .ssh
+cat id_rsa.pub > authorized_keys
+chmod 700 authorized_keys
+
+Configuration on Master
+========================
+Copy the slave node's public key[id_rsa.pub] to Master Node's known_hosts file
+mkdir -p /var/lib/jenkins/.ssh
+cd /var/lib/jenkins/.ssh
+ssh-keyscan -H SLAVE-NODE-IP-OR-HOSTNAME >>/var/lib/jenkins/.ssh/known_hosts
+# ssh-keyscan -H 172.31.38.42 >>/var/lib/jenkins/.ssh/known_hosts
+chown jenkins:jenkins known_hosts
+#we need to change the owner as we ran ssh-keyscan command using “root” user.
+# default user of Jenkins will be “jenkins”
+chmod 700 known_hosts
+# DOne !!
+
+configuration on JenkinsGUI:
+=============================
+click on Manage Jenkins > Manage Nodes > New Node
+Enter the "NAME" "#of executors" , "Remote root directory" and "Label"
+select launch method as "launch agent via SSH"
+Enter the Hostname "slave_ip"
+select the slave credentials(if using user root then username "root" and password will be "id_rsa" key)
+select "Host key verification strategy" as "Known hosts file verification startegy"
+click on "SAVE"
+
+DONE!!!
+
+3) Install plugins
+Goto manage jenkins
+click on  "manage plugins"
+search for the plugin in the search bar
+select the plugin and click on "Install Without restart"
+ 
+4) setup users
+Goto manage jenkins
+click on "Configure Global Security"
+In "Authorization" select " Project-based Matrix Authorization Strategy"
+Assign "build" and "view access to authenticated users"
+click on save
+done!!
+
+5) Email alert integration 
+
+Go to the Jenkins home page and click the ‘Manage Jenkins’ menu option. Then, select the ‘Configure System’ option.
+Enter the SMTP server name under ‘Email Notification’. Click the ‘Advanced’ button and then click the checkbox next to the ‘Use SMTP Authentication’ option. Now, set the following fields.
+SMTP server name : smtp.gmail.com
+User name: user_email_id@gmail.com
+Password: 123456
+Use SSL : Checked
+SMTP Port: 465
+
+check on "Test configuration by sending test e-mai" enter recipient email and click on test.
+If its throwing error that's beacuse gmail is blocking the activity.
+To unblock follow the below.
+
+Do all these steps, otherwise the error will persists.
+
+-You must have to log into just one gmail account (the one you are using to send email).
+
+-Then go to https://www.google.com/settings/security/lesssecureapps and Turn On this feature.
+
+-And last go to https://accounts.google.com/DisplayUnlockCaptcha and click Continue.
+
+Then goto jenkins job
+Then, Click the ‘Add post-build action’ drop-down and select the ‘E-mail Notification’ value. Enter the recipient email id in the ‘E-mail Notification’ box and select the checkbox next to the ‘Send e-mail for every unstable build’ option.
+
+done!!!
+
+6) slack alert integration
+
+Install Jenkins app for Slack:
+==============================
+Go to your Slack app on your desktop.
+On the bottom of your left side navigation bar, you will see Recent Apps.
+Click Add more apps.
+Search for “Jenkins CI” and click Add.
+You will be sent to the Jenkins app page in your browser. Click Install.
+Select the Slack channel you want to post to and click Add Jenkins CI integration. (You can also create a new channel by selecting the bottom right link where it says create a new channel).
+On the next page, scroll down to Integration Settings to find all the settings and info you need to customize your Slack notification in Jenkins.
+We will need the auto-generated Token later for configuration in Jenkins.
+
+Install Slack Notifications plug-in for Jenkins
+===============================================
+Now, go to your Jenkins admin portal in your local browser.
+On the top left corner, go to Jenkins → Manage Jenkins → Manage Plugins
+Under the Available tab, filter and search for “slack notification.”
+Select Slack Notification, then Install without restart on the bottom left.
+Once the “Success” message appears, go to back to the main page by clicking Go back to the top page.
+Connect Jenkins to your Slack
+Before we set up a new pipeline job, we need to configure Jenkin’s settings to connect to your Slack.
+We will do this in Manage Jenkins → Configure System
+Scroll all the way down on the Configure System page until you see the settings for Slack.
+Workspace: Your team’s workspace name. If you sign in to slack at https://example.slack.com/, your workspace is ‘example’.
+Credential:
+- Click Add → Jenkins and a pop-up will appear.
+- Under the Kind dropdown, select secret text.
+Copy and paste your Slack Token into Secret, and click Add.
+If you forgot to save/copy your token, go to:
+Slack app directory (https://<YOURWORKSPACE>.slack.com/apps/manage) → Jenkins CI → Configurations → Edit Configuration → Integration Settings
+Optional: I added SlackToken for Description to keep track of my credentials/tokens…
+so that it’s readable in the drop-down after you’ve added it. You can choose any name you want.
+Make sure to select the newly added token credential from the drop-down.
+Default channel/member id: Enter the channel name (i.e. #channel) or user ID (i.e. UUU123UU4) you want the notification to be sent to.
+Once everything is filled out, click Save.
+
+Create a new job to test the Slack notification.
+===============================================
+In order to integrate a traditional job with Slack, we'll use a post-build action.
+
+Let's pick any job, or create a new one. When we drop down the Add post-build action menu, we'll find Slack Notifications:
+
+Once selected, there are lots of available inputs to the Slack Notification action. Generally, most of the default values are sufficient. However, there are a few required pieces of information:
+
+Which build phases to send messages for (start, success, failure, etc)
+The name of the credentials to use – the ones we added previously
+The Slack channel name or member ID to send messages to
+We can also specify additional fields if desired, such as commit information used for the Jenkins job, custom messages, custom bot icons, and more:
+When setting things up via the UI, we can use the Test Connection button to ensure that Jenkins
+Done!!!
+
+
+

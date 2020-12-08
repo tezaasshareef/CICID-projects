@@ -1,0 +1,67 @@
+Tasks:
+======
+1) create git repo
+Goto www.github.com
+click on signIn
+Enter username and password
+From panel bar click on  "new"
+Enter the repository name
+select public or private repository
+click on "create repository"
+done!!
+
+2) clone repo to local and add a file and push to github
+clone the repo to local by using below command
+git clone <repo_url>
+cd <repo>
+echo "test" >> file_name
+git add file_name
+git commit -m "commit_message"
+git push -u origin master
+
+
+3) lock master branch
+
+In your repository navigation to Settings > Branches
+Under “Protected Branches” select master
+Enable the following settings:
+1)Protect this branch
+2)Require pull request reviews before merging
+3)Dismiss stale pull request approvals when new commits are pushed
+4)Include administrators
+done!!
+
+4) add contributors
+Under your repository name, click  Settings.
+Repository settings button
+In the left sidebar, click Manage access.
+"Manage access" tab
+Click Invite a collaborator.
+"Invite a collaborator" button
+In the search field, start typing the name of person you want to invite, then click a name in the list of matches.
+Search field for typing the name of a person to invite to the repository
+Click Add NAME to REPOSITORY.
+Button to add collaborator
+The user will receive an email inviting them to the repository. Once they accept your invitation, they will have collaborator access to your repository.
+
+5) create a branch and commit a test file to repo
+git clone <repo_url>
+git branch <branch_name>
+git checkout <branch_name>
+echo "test_branch" >> file_name
+git add .
+git commit -m "added test file in branch"
+git push -u origin <branch_name>
+done!!
+
+6) review and approve pull request
+Under your repository name, click  Pull requests.
+In the list of pull requests, click the pull request you'd like to review.
+On the pull request, click  Files changed.
+Review the changes in the pull request, and optionally, comment on specific lines.
+Above the changed code, click Approve changes.
+Select Approve to approve merging the changes proposed in the pull request.
+Click Submit review.
+
+
+
