@@ -1,0 +1,19 @@
+Nexus user creation and permissions:
+====================================
+1) Login to nexuse server as "admin user"
+2) click on settings and under security goto roles and click on create a new role.
+3) Enter the details "Role ID" and "Role name".
+4) Under "Priviliges" tab
+select the below mention roles for a deployment and read access to repo.
+(ncodeit-helloworld is repository name # needs to replace with your repo name)
+nx-repository-view-maven2-ncodeit-helloworld-add
+nx-repository-view-maven2-ncodeit-helloworld-browse
+nx-repository-view-maven2-ncodeit-helloworld-edit
+nx-repository-admin-maven2-ncodeit-helloworld-read
+nx-userschangepw
+5) Click on save!!
+6) Now goto "users" tab and click on "Create local user"
+7) Enter all the details and add the role which was created in above steps.
+8) Click on save!!
+By default user will get all the access which were assign to the roles.
+Done!!
