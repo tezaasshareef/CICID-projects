@@ -1,0 +1,23 @@
+#Pre-requisites
+#Enter below command on server where script exists(say server A)
+ssh-keygen
+cat .ssh/id_rsa.pub
+#copy the content 
+
+#login to the server where ansible awx need to be installed(say server B)
+vi .ssh/authorized_keys
+#paste the content
+
+#try login from server A to server B without giving any password
+
+#Installing ansible awx
+#Run ansibleawx.sh script from remote machine using command [ ssh username@ip 'bash -s' < ./ansibleawx.sh ]
+#Install from same machine, using [./ansibleawx.sh]
+
+#Please wait for few minutes after executing the script and try to access the awx dashboard
+
+################
+#Ansible AWX runs on Default port no: 80 and dafault port(Host port) can be changed in inventory file
+#Access to dashboard using public/private ip and port number (x.x.x.x:80)
+#Login to ansible AWX dashboard using credentials(username & password),Username & password are saved  in inventory file.
+#If unable to reach URL, open all traffic/port number in security groups & reboot the server.
